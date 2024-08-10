@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body>
+    <div class="form-container" id="login">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <p id="error-message" class="error"></p>
+            <button type="submit" class="button">Login</button>
+        </form>
+        <p><a href="forgot.html">Forgot password?</a></p>
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAmXO7eNNvUoHHFAHcgXs8r_9yQtBX8EZY",
+            authDomain: "tr-heinz-efl.firebaseapp.com",
+            databaseURL: "https://tr-heinz-efl-default-rtdb.firebaseio.com",
+            projectId: "tr-heinz-efl",
+            storageBucket: "tr-heinz-efl.appspot.com",
+            messagingSenderId: "989398174239",
+            appId: "1:989398174239:web:1dd1f98e5a1c6ecd80a32a",
+            measurementId: "G-LWNSM194XB"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessageElement = document.getElementById('error-message');
+
+            errorMessageElement.textContent = ''; // Clear previous error message
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Successful login, redirect to index.html
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Error logging in:', error.message);
+                    errorMessageElement.textContent = 'Invalid username or password';
+                });
+        });
+    </script>
+</body>
+</html>
